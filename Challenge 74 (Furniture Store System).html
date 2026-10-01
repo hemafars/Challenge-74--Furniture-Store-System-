@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <div class="container" id="container">
+  <div class='container d-flex flex-wrap' id="container">
 
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
@@ -67,44 +67,47 @@
         Price: 20000, // ⚠️ سعر عالي لاختبار الخصم
       }
     ];
-    // (Customer, Product, Quantity, Installation, Price)
     function furnitureStoreSystem(data) {
       const { Customer, Product, Quantity, Installation, Price } = data
       let Total = Price * Quantity;
       let Discount = 0;
       let FinalPrice;
-      let complet = true;
+      let complete = true;
 
-      if (isNaN(Price) || Price <= 0) { complet = false };
-      if (isNaN(Quantity) || Quantity <= 0) { complet = false };
-      if (complet) {
+      if (!Number.isFinite(Price) || Price <= 0) { complete = false };
+      if (!Number.isFinite(Quantity) || Quantity <= 0) { complete = false };
+      if (complete) {
 
-        if (Installation.toLowerCase() === "yes") { Total = Total + 500 };
+        if (Installation.toLowerCase() === "yes") { Total += 500 };
         if (Total > 25000) { Discount = Total * 0.12 };
 
         FinalPrice = Total - Discount;
 
         return `
-        <h5>Customer : ${Customer}</h5>
-        <h5>Product : ${Product}</h5>
-        <h5>Quantity : ${Quantity}</h5>
-        <h5>Installation : ${Installation}</h5>
-        <h5>Total : ${Total}</h5>
-        <h5>Discount : ${Discount}</h5>
-        <h5>FinalPrice : ${FinalPrice}</h5>
+        <div  class="p-3 m-3 bg-primary" style="width: 300px;">
+          <p><strong>Customer :</strong> ${Customer}</p>
+          <p><strong>Product :</strong> ${Product}</p>
+          <p><strong>Quantity :</strong> ${Quantity}</p>
+          <p><strong>Installation :</strong> ${Installation}</p>
+          <p><strong>Total :</strong> ${Total}</p>
+          <p><strong>Discount :</strong> ${Discount}</p>
+          <p><strong>FinalPrice :</strong> ${FinalPrice}</p>
+        </div>
         <hr>
         `
-        console.log(`Customer : ${Customer}`);
-        console.log(`Product : ${Product}`);
-        console.log(`Quantity : ${Quantity}`);
-        console.log(`Installation : ${Installation}`);
-        console.log(`Total : ${Total}`);
-        console.log(`Discount : ${Discount}`);
-        console.log(`FinalPrice : ${FinalPrice}`);
+      }
+      if (!complete) {
+        return `
+    <div class="p-3 m-3 bg-danger text-white" style="width: 300px;">
+      <p><strong>Customer :</strong> ${Customer}</p>
+      <p><strong>Product :</strong> ${Product}</p>
+      <p>⚠️ بيانات غير صحيحة (السعر أو الكمية)</p>
+    </div>
+    <hr>`;
       }
 
     }
-    text = ""
+    let text = ""
     for (const data of allData) {
       text += furnitureStoreSystem(data)
     }
